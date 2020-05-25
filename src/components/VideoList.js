@@ -2,22 +2,21 @@ import './VideoList.css';
 import React from 'react';
 import VideoItem from './VideoItem';
 
-class VideoPlayer extends React.Component {
-    state = { videoId: '' };
-
+class VideoList extends React.Component {
+    // Renders the list of videos, using VideoItem as a child component for each video.
     render() {
         const Titles = this.props.videos.map((video) => {
             return (
                 <VideoItem
                     key={video.id.videoId}
                     video={video}
-                    onClick={() => this.props.onClick(video.id.videoId)}
+                    onVideoSelect={this.props.onVideoSelect}
+                    style={{ padding: '5px' }}
                 />
             );
         });
-        // console.log(Titles);
         return <ul className="column">{Titles}</ul>;
     }
 }
 
-export default VideoPlayer;
+export default VideoList;

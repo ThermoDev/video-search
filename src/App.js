@@ -7,39 +7,21 @@ import axios from 'axios';
 const YOUTUBE_API_KEY = `${process.env.REACT_APP_YOUTUBE_API_KEY.toString()}`; /* Replace with your own API key from the YouTube API. */
 
 class App extends React.Component {
-    AppHelper = (props) => {
-        return (
-            <div className="ui container" style={{ paddingTop: '20px' }}>
-                <SearchBar onSubmit={this.onSearchSubmit} />
-                <div
-                    style={{ display: 'flex' }}
-                    className="ui two column doubling grid"
-                >
-                    {props.content}
-                    <VideoList
-                        videos={this.state.videos}
-                        onClick={this.onClick}
-                    />
-                </div>
-            </div>
-        );
-    };
-
     state = {
-        videoId: '',
-        videoTitle: '',
-        videoDescription: '',
         videos: [],
+        video: [],
         hasError: false,
-        errorMessage: '',
+        error: [],
     };
 
-    onClick = (id) => {
-        // console.log('Video ID: ' + id);
-        // console.log('this is: ', this);
-        this.setState({ videoId: id });
+    // Used to update the video that has been selected
+    onVideoSelect = (video) => {
+        this.setState({
+            video: video,
+        });
     };
 
+    // On Search Submit used by Search Bar to propagate the VideoList
     onSearchSubmit = async (term) => {
         try {
             const response = await axios.get(
@@ -53,42 +35,41 @@ class App extends React.Component {
                     },
                 }
             );
-            console.log(response);
-            // console.log('Video ID: ' + this.state.videoId);
             this.setState({
-                hasError: false,
-                videoId: response.data.items[0].id.videoId,
-                videoTitle: response.data.items[0].snippet.title,
-                videoDescription: response.data.items[0].snippet.description,
+                video: response.data.items[0],
                 videos: response.data.items,
+                hasError: false,
             });
-
         } catch (error) {
-            console.log(error);
-            this.setState({ hasError: true, errorMessage: error.toString() });
+            this.setState({
+                hasError: true,
+                error: error.response.data.error,
+            });
         }
     };
 
+    // Renders the App
     render() {
-        if (this.state.hasError) {
-            const videoPlayerContent = (
-                <VideoPlayer
-                    hasError={this.state.hasError}
-                    errorMessage={this.state.errorMessage}
-                />
-            );
-            return <this.AppHelper content={videoPlayerContent} />;
-        }
-
-        const videoPlayerContent = (
-            <VideoPlayer
-                videoId={this.state.videoId}
-                videoTitle={this.state.videoTitle}
-                videoDescription={this.state.videoDescription}
-                className="column"
-            />
+        return (
+            <div className="ui container" style={{ paddingTop: '20px' }}>
+                <SearchBar onSubmit={this.onSearchSubmit} />
+                <div
+                    style={{ display: 'flex' }}
+                    className="ui two column doubling grid"
+                >
+                    <VideoPlayer
+                        hasError={this.state.hasError}
+                        error={this.state.error}
+                        video={this.state.video}
+                        className="column"
+                    />
+                    <VideoList
+                        videos={this.state.videos}
+                        onVideoSelect={this.onVideoSelect}
+                    />
+                </div>
+            </div>
         );
-        return <this.AppHelper content={videoPlayerContent} />;
     }
 }
 
