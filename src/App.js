@@ -18,6 +18,7 @@ class App extends React.Component {
     onVideoSelect = (video) => {
         this.setState({
             video: video,
+            hasError: false,
         });
     };
 
@@ -35,11 +36,24 @@ class App extends React.Component {
                     },
                 }
             );
-            this.setState({
-                video: response.data.items[0],
-                videos: response.data.items,
-                hasError: false,
-            });
+
+            if (response.data.pageInfo.totalResults === 0) {
+                const error = {
+                    code: '204',
+                    message: 'No results found for: ' + term,
+                };
+                this.setState({
+                    hasError: true,
+                    error: error,
+                });
+            } else {
+                console.log(response.data);
+                this.setState({
+                    video: response.data.items[0],
+                    videos: response.data.items,
+                    hasError: false,
+                });
+            }
         } catch (error) {
             this.setState({
                 hasError: true,
