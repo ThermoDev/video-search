@@ -1,4 +1,4 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+You can now view this project in the browser with GitHub Pages: [thermodev.github.io/video-search/](https://thermodev.github.io/video-search/)
 
 ## Available Scripts
 

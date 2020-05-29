@@ -5,15 +5,25 @@ class VideoItem extends React.Component {
     render() {
         const { thumbnails, description, title } = this.props.video.snippet;
         return (
-            <li
+            <div
+                className="item"
                 onMouseUp={() => this.props.onVideoSelect(this.props.video)}
                 style={{ padding: '5px' }}
             >
-                <button>
-                    <img src={thumbnails.default.url} alt={description} />
-                    {title}
-                </button>
-            </li>
+                <div className="video-item-button">
+                    <img
+                        className="ui small image"
+                        src={thumbnails.medium.url}
+                        alt={description}
+                    />
+                    <div
+                        className="content header"
+                        style={{ paddingLeft: '5px' }}
+                    >
+                        {title}
+                    </div>
+                </div>
+            </div>
         );
     }
 }

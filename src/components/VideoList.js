@@ -15,7 +15,11 @@ class VideoList extends React.Component {
                 />
             );
         });
-        return <ul className="column">{Titles}</ul>;
+        return (
+            <div className="ui middle aligned divided list column">
+                {Titles}
+            </div>
+        );
     }
 }
 
