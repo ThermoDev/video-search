@@ -78,6 +78,7 @@ class App extends React.Component {
                         className="column"
                     />
                     <VideoList
+                        selectedVideo={this.state.video}
                         videos={this.state.videos}
                         onVideoSelect={this.onVideoSelect}
                     />

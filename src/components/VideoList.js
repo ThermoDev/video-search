@@ -10,6 +10,7 @@ class VideoList extends React.Component {
                 <VideoItem
                     key={video.id.videoId}
                     video={video}
+                    selectedVideo={this.props.selectedVideo}
                     onVideoSelect={this.props.onVideoSelect}
                     style={{ padding: '5px' }}
                 />
